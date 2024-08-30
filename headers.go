@@ -1,15 +1,17 @@
 package scrapify
 
-import "net/http"
+import (
+	"net/http"
+)
 
 var defaultHeaders = map[string]string{
-	"Accept":                    "*/*",
-	"Accept-Encoding":           "gzip, deflate, br",
-	"Accept-Language":           "en-US,en;q=0.9",
-	"Cache-Control":             "no-cache",
-	"Connection":                "keep-alive",
-	"User-Agent":                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0",
-	"Upgrade-Insecure-Requests": "1",
+	"accept":                    "*/*",
+	"accept-encoding":           "gzip, deflate, br",
+	"accept-language":           "en-US,en;q=0.9",
+	"cache-control":             "no-cache",
+	"connection":                "keep-alive",
+	"user-agent":                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0",
+	"upgrade-insecure-requests": "1",
 	"sec-ch-ua":                 `"Not)A;Brand";v="99", "Google Chrome";v="127", "Chromium";v="127"`,
 	"sec-ch-ua-mobile":          "?0",
 	"sec-ch-ua-platform":        "Windows",
@@ -17,7 +19,8 @@ var defaultHeaders = map[string]string{
 	"sec-fetch-dest":            "empty",
 	"sec-fetch-mode":            "cors",
 	"sec-fetch-site":            "same-origin",
-	"Priority":                  "u=0, i",
+	"priority":                  "u=0, i",
+	"referer":                   "https://www.google.com/",
 }
 
 func SetHeaders(req *http.Request, headers M) {
@@ -29,4 +32,6 @@ func SetHeaders(req *http.Request, headers M) {
 			req.Header.Set(k, v)
 		}
 	}
+	req.Header.Set("Origin", req.URL.String())
+	req.Header.Set("Host", req.URL.Host)
 }
