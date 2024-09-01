@@ -1,6 +1,7 @@
 package scrapify
 
 import (
+	"github.com/gocolly/colly/v2"
 	"net/http"
 )
 
@@ -34,4 +35,17 @@ func SetHeaders(req *http.Request, headers M) {
 	}
 	req.Header.Set("Origin", req.URL.String())
 	req.Header.Set("Host", req.URL.Host)
+}
+
+func SetCollyHeaders(req *colly.Request, headers M) {
+	for k, v := range defaultHeaders {
+		req.Headers.Set(k, v)
+	}
+	if headers != nil {
+		for k, v := range headers {
+			req.Headers.Set(k, v)
+		}
+	}
+	req.Headers.Set("Origin", req.URL.String())
+	req.Headers.Set("Host", req.URL.Host)
 }
