@@ -41,7 +41,40 @@ func main() {
 	fmt.Println(resp.StatusCode)
 }
 ```
+```go
+package main
 
+import (
+        "fmt"
+        "github.com/gocolly/colly/v2"
+        "github.com/iarsham/scrapify"
+        "net/http"
+)
+
+func main() {
+    c := colly.NewCollector()
+    client := &http.Client{
+    Transport: scrapify.NewTransport(scrapify.Chrome),
+    }
+    c.SetClient(client)
+
+    c.OnRequest(func(r *colly.Request) {
+        scrapify.SetCollyHeaders(r, nil)
+    })
+    
+    c.OnHTML("body", func(e *colly.HTMLElement) {
+        fmt.Println(e.Text)
+    })
+    
+    c.OnResponse(func(r *colly.Response) {
+        fmt.Println(r.StatusCode)
+    })
+    
+    if err := c.Visit("https://chatgpt.com"); err != nil {
+        panic(err)
+    }
+}
+```
 ## Contributing
 
 We welcome contributions to this library. Please feel free to submit pull requests with improvements and bug fixes.
