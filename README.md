@@ -41,39 +41,36 @@ func main() {
 	fmt.Println(resp.StatusCode)
 }
 ```
+
 ```go
 package main
 
 import (
-        "fmt"
-        "github.com/gocolly/colly/v2"
-        "github.com/iarsham/scrapify"
-        "net/http"
+	"fmt"
+	"github.com/iarsham/scrapify"
 )
 
 func main() {
-    c := colly.NewCollector()
-    client := &http.Client{
-    Transport: scrapify.NewTransport(scrapify.Chrome),
-    }
-    c.SetClient(client)
+	c := colly.NewCollector()
+	c.WithTransport(scrapify.NewTransport(scrapify.Chrome))
 
-    c.OnRequest(func(r *colly.Request) {
-        scrapify.SetCollyHeaders(r, nil)
-    })
-    
-    c.OnHTML("body", func(e *colly.HTMLElement) {
-        fmt.Println(e.Text)
-    })
-    
-    c.OnResponse(func(r *colly.Response) {
-        fmt.Println(r.StatusCode)
-    })
-    
-    if err := c.Visit("https://chatgpt.com"); err != nil {
-        panic(err)
-    }
+	c.OnRequest(func(r *colly.Request) {
+		scrapify.SetCollyHeaders(r, nil)
+	})
+
+	c.OnHTML("body", func(e *colly.HTMLElement) {
+		fmt.Println(e.Text)
+	})
+
+	c.OnResponse(func(r *colly.Response) {
+		fmt.Println(r.StatusCode)
+	})
+
+	if err := c.Visit("https://chatgpt.com"); err != nil {
+		panic(err)
+	}
 }
+
 ```
 ## Contributing
 
